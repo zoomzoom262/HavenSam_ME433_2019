@@ -24,10 +24,10 @@
 
 // DEVCFG2 - get the sysclk clock to 48MHz from the 8MHz crystal
 #pragma config FPLLIDIV = DIV_2 // divide input clock to be in range 4-5MHz
-#pragma config FPLLMUL = MUL_15 // multiply clock after FPLLIDIV
-#pragma config FPLLODIV = x // divide clock after FPLLMUL to get 48MHz
-#pragma config UPLLIDIV = x // divider for the 8MHz input clock, then multiplied by 12 to get 48MHz for USB
-#pragma config UPLLEN = x // USB clock on
+#pragma config FPLLMUL = MUL_24 // multiply clock after FPLLIDIV 96
+#pragma config FPLLODIV = DIV_2 // divide clock after FPLLMUL to get 48MHz
+#pragma config UPLLIDIV = DIV_2 // divider for the 8MHz input clock, then multiplied by 12 to get 48MHz for USB
+#pragma config UPLLEN = ON // USB clock on
 
 // DEVCFG3
 #pragma config USERID = 0x1234 // some 16bit userid, doesn't matter what
@@ -54,11 +54,24 @@ int main() {
     DDPCONbits.JTAGEN = 0;
 
     // do your TRIS and LAT commands here
+    
+    TRISAbits.TRISA4 = 1; //A4 (button with pullup) is an input)
+            TRISBbits.TRISB4 = 0 ;//B4 is an output (for LED)
+            
+          
 
     __builtin_enable_interrupts();
 
     while(1) {
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
-	// remember the core timer runs at half the sysclk
+	// remember the core timer runs at half the sysclk (24 MHz)
+        
+        _CPO_SET_COUNT(0);
+        if (_CP0_GET_COUNT()== 24000){
+            LATDbits.LATB4 = !LATDbits.LATB4;
+            
+            
+        };
+       
     }
 }
