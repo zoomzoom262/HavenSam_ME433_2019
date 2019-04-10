@@ -66,11 +66,10 @@ int main() {
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 	// remember the core timer runs at half the sysclk (24 MHz)
         
-        _CPO_SET_COUNT(0);
+        _CP0_SET_COUNT(0);
         if (_CP0_GET_COUNT()== 24000){
-            LATDbits.LATB4 = !LATDbits.LATB4;
-            
-            
+            LATBbits.LATB4 = !LATBbits.LATB4;
+          
         };
        
     }
