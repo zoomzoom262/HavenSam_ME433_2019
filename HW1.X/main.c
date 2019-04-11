@@ -55,21 +55,21 @@ int main() {
 
     // do your TRIS and LAT commands here
     
-    TRISAbits.TRISA4 = 1; //A4 (button with pullup) is an input)
-            TRISBbits.TRISB4 = 0 ;//B4 is an output (for LED)
+    TRISBbits.TRISB4 = 1; //A4 (button with pullup) is an input)
+            TRISAbits.TRISA4 = 0 ;//B4 is an output (for LED)
             
           
 
     __builtin_enable_interrupts();
-
+_CP0_SET_COUNT(0);
     while(1) {
 	// use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
 	// remember the core timer runs at half the sysclk (24 MHz)
         
-        _CP0_SET_COUNT(0);
-        if (_CP0_GET_COUNT()== 24000){
-            LATBbits.LATB4 = !LATBbits.LATB4;
-          
+        
+        if (_CP0_GET_COUNT()> 12000000){
+            LATAbits.LATA4 = !LATAbits.LATA4;
+          _CP0_SET_COUNT(0);
         };
        
     }
